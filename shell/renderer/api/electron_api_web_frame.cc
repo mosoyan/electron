@@ -17,6 +17,7 @@
 #include "content/public/renderer/render_frame_visitor.h"
 #include "content/public/renderer/render_view.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "shell/browser/javascript_environment.h"
 #include "shell/common/api/api.mojom.h"
 #include "shell/common/gin_converters/blink_converter.h"
 #include "shell/common/gin_converters/callback_converter.h"
@@ -205,7 +206,7 @@ class ScriptExecutionCallback : public blink::WebScriptExecutionCallback {
 
   void Completed(
       const blink::WebVector<v8::Local<v8::Value>>& result) override {
-    v8::Isolate* isolate = v8::Isolate::GetCurrent();
+    v8::Isolate* isolate = JavascriptEnvironment::GetIsolate();
     if (!result.empty()) {
       if (!result[0].IsEmpty()) {
         v8::Local<v8::Value> value = result[0];

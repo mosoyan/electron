@@ -173,7 +173,7 @@ bool AllowWasmCodeGenerationCallback(v8::Local<v8::Context> context,
 
 void ErrorMessageListener(v8::Local<v8::Message> message,
                           v8::Local<v8::Value> data) {
-  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::Isolate* isolate = electron::JavascriptEnvironment::GetIsolate();
   node::Environment* env = node::Environment::GetCurrent(isolate);
 
   if (env) {

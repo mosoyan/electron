@@ -832,8 +832,8 @@ v8::Local<v8::Promise> Session::LoadExtension(
              const std::string& error_msg) {
             if (extension) {
               if (!error_msg.empty()) {
-                node::Environment* env =
-                    node::Environment::GetCurrent(v8::Isolate::GetCurrent());
+                node::Environment* env = node::Environment::GetCurrent(
+                    JavascriptEnvironment::GetIsolate());
                 EmitWarning(env, error_msg, "ExtensionLoadWarning");
               }
               promise.Resolve(extension);
@@ -872,7 +872,8 @@ v8::Local<v8::Value> Session::GetAllExtensions() {
     if (extension->location() != extensions::Manifest::COMPONENT)
       extensions_vector.emplace_back(extension.get());
   }
-  return gin::ConvertToV8(v8::Isolate::GetCurrent(), extensions_vector);
+  return gin::ConvertToV8(JavascriptEnvironment::GetIsolate(),
+                          extensions_vector);
 }
 
 void Session::OnExtensionLoaded(content::BrowserContext* browser_context,

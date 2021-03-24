@@ -138,7 +138,8 @@ v8::Local<v8::Value> HttpResponseHeadersToV8(
       values->Append(value);
     }
   }
-  return gin::ConvertToV8(v8::Isolate::GetCurrent(), response_headers);
+  return gin::ConvertToV8(electron::JavascriptEnvironment::GetIsolate(),
+                          response_headers);
 }
 
 // Overloaded by multiple types to fill the |details| object.

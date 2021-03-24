@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "content/public/renderer/render_frame.h"
 #include "electron/buildflags/buildflags.h"
+#include "shell/browser/javascript_environment.h"
 #include "shell/common/api/electron_bindings.h"
 #include "shell/common/asar/asar_util.h"
 #include "shell/common/gin_helper/dictionary.h"
@@ -66,7 +67,7 @@ void ElectronRendererClient::RunScriptsAtDocumentStart(
     content::RenderFrame* render_frame) {
   RendererClientBase::RunScriptsAtDocumentStart(render_frame);
   // Inform the document start pharse.
-  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
+  v8::HandleScope handle_scope(JavascriptEnvironment::GetIsolate());
   node::Environment* env = GetEnvironment(render_frame);
   if (env)
     gin_helper::EmitEvent(env->isolate(), env->process_object(),
@@ -77,7 +78,7 @@ void ElectronRendererClient::RunScriptsAtDocumentEnd(
     content::RenderFrame* render_frame) {
   RendererClientBase::RunScriptsAtDocumentEnd(render_frame);
   // Inform the document end pharse.
-  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
+  v8::HandleScope handle_scope(JavascriptEnvironment::GetIsolate());
   node::Environment* env = GetEnvironment(render_frame);
   if (env)
     gin_helper::EmitEvent(env->isolate(), env->process_object(),
@@ -256,9 +257,9 @@ node::Environment* ElectronRendererClient::GetEnvironment(
     content::RenderFrame* render_frame) const {
   if (injected_frames_.find(render_frame) == injected_frames_.end())
     return nullptr;
-  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
-  auto context =
-      GetContext(render_frame->GetWebFrame(), v8::Isolate::GetCurrent());
+  v8::HandleScope handle_scope(JavascriptEnvironment::GetIsolate());
+  auto context = GetContext(render_frame->GetWebFrame(),
+                            JavascriptEnvironment::GetIsolate());
   node::Environment* env = node::Environment::GetCurrent(context);
   if (environments_.find(env) == environments_.end())
     return nullptr;

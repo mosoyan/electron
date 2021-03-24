@@ -191,7 +191,8 @@ namespace {
 #if defined(MAS_BUILD)
 void GetUploadedReports(
     base::OnceCallback<void(v8::Local<v8::Value>)> callback) {
-  std::move(callback).Run(v8::Array::New(v8::Isolate::GetCurrent()));
+  std::move(callback).Run(
+      v8::Array::New(electron::JavascriptEnvironment::GetIsolate();));
 }
 #else
 scoped_refptr<UploadList> CreateCrashUploadList() {
