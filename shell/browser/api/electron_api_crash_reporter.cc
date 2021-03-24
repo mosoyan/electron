@@ -22,6 +22,7 @@
 #include "content/public/common/content_switches.h"
 #include "gin/arguments.h"
 #include "gin/data_object_builder.h"
+#include "shell/browser/javascript_environment.h"
 #include "shell/common/electron_paths.h"
 #include "shell/common/gin_converters/callback_converter.h"
 #include "shell/common/gin_converters/file_path_converter.h"
